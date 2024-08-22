@@ -122,7 +122,7 @@ onUnmounted(() => removeFinishEventListener());
                     </div>
                     <div class="flex flex-col justify-center items-start gap-1 self-stretch">
                         <span class="w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.txid') }}</span>
-                        <span class="self-stretch text-gray-950 text-sm font-medium">{{ transaction.txn_hash }}</span>
+                        <span class="self-stretch text-gray-950 text-sm font-medium break-words">{{ transaction.txn_hash }}</span>
                     </div>
                 </div>
             </div>
