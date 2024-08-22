@@ -98,7 +98,7 @@ class DashboardController extends Controller
         ]);
 
         $user = Auth::user();
-dd($request->all());
+
         $transaction = Transaction::create([
             'user_id' => $user->id,
             'category' => 'trading_account',
