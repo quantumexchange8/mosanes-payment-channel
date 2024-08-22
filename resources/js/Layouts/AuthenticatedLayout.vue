@@ -46,7 +46,9 @@ defineProps({
                 </div>
             </main>
 
-            <PageFooter />
+            <div class="mt-20">
+                <PageFooter />
+            </div>
 
         </div>
     </div>
