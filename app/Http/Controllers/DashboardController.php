@@ -139,76 +139,6 @@ class DashboardController extends Controller
         $redirectUrl = $url . "?" . http_build_query($params);
 
         return Inertia::location($redirectUrl);
-
-        // $tradingAccount = TradingAccount::find($request->account_id);
-        // (new CTraderService)->getUserInfo(collect($tradingAccount));
-
-        // $tradingAccount = TradingAccount::find($request->account_id);
-        // $amount = $request->input('amount');
-        // $wallet = Auth::user()->wallet->first();
-
-        // if ($wallet->balance < $amount) {
-        //     throw ValidationException::withMessages(['wallet' => trans('public.insufficient_balance')]);
-        // }
-
-        // try {
-        //     $trade = (new CTraderService)->createTrade($tradingAccount->meta_login, $amount, $tradingAccount->account_type_id, "Deposit To Account", ChangeTraderBalanceType::DEPOSIT);
-        // } catch (\Throwable $e) {
-        //     if ($e->getMessage() == "Not found") {
-        //         TradingUser::firstWhere('meta_login', $tradingAccount->meta_login)->update(['acc_status' => 'Inactive']);
-        //     } else {
-        //         Log::error($e->getMessage());
-        //     }
-        //     return response()->json(['success' => false, 'message' => $e->getMessage()]);
-        // }
-
-        // $ticket = $trade->getTicket();
-        // $newBalance = $wallet->balance - $amount;
-
-//         $transaction = Transaction::create([
-//             'user_id' => Auth::id(),
-//             'category' => 'trading_account',
-//             'transaction_type' => 'fund_in',
-//             'from_wallet_id' => $wallet->id,
-//             'to_meta_login' => $tradingAccount->meta_login,
-//             'transaction_number' => RunningNumberService::getID('transaction'),
-//             'amount' => $amount,
-//             'transaction_charges' => 0,
-//             'transaction_amount' => $amount,
-//             'old_wallet_amount' => $wallet->balance,
-//             'new_wallet_amount' => $newBalance,
-//             'status' => 'processing',
-//             'ticket' => $ticket,
-//         ]);
-
-        // $wallet->balance = $newBalance;
-        // $wallet->save();
-
-        // // Check if the account exists
-        // if ($tradingAccount) {
-        //     // Redirect back with success message
-        //     return back()->with('toast', [
-        //         'title' => trans('public.toast_revoke_account_success'),
-        //         'type' => 'success',
-        //     ]);
-        // }
-
-//        $transactionData = [
-//            'user_id' => 1,
-//            'transaction_number' => 'TX1234567890',
-//            'from_meta_login' => '123456',
-//            'transaction_amount' => 1000.00,
-//            'amount' => 1000.00,
-//            'receiving_address' => 'dummy_address',
-//            'created_at' => '2024-07-27 16:09:45',
-//        ];
-//
-//        // Set notification data in the session
-//        return redirect()->back()->with('notification', [
-//            'details' => $transactionData,
-//            'type' => 'deposit',
-//        ]);
-
     }
 
         //payment gateway return function
@@ -285,10 +215,7 @@ class DashboardController extends Controller
                     'remarks' => $result['remarks'],
                     'approved_at' => now()
                 ]);
-    
-    //            Notification::route('mail', 'payment@currenttech.pro')
-    //                ->notify(new DepositApprovalNotification($payment));
-    
+        
                 if ($transaction->status == 'successful') {
                     if ($transaction->transaction_type == 'deposit') {
                         try {
