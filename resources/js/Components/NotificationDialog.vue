@@ -18,7 +18,7 @@ const withdrawal_type = ref(null);
 // Use Inertia's usePage to get flash data from session
 const page = usePage();
 
-let removeFinishEventListener = Inertia.on("finish", () => {
+let removeFinishEventListener = Inertia.on("navigate", () => {
     if (page.props.notification) {
         transaction.value = page.props.notification.details;
         withdrawal_type.value = page.props.notification.withdrawal_type || null;
@@ -59,21 +59,21 @@ onUnmounted(() => removeFinishEventListener());
                 <div class="flex flex-col items-center py-2 gap-2 self-stretch">
                     <div class="flex flex-col justify-center items-start gap-1 self-stretch">
                         <span class="w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.transaction_id') }}</span>
-                        <span class="self-stretch text-gray-950 text-sm font-medium ">{{ transaction.transaction_number }}</span>
+                        <span class="self-stretch text-gray-950 text-sm font-medium break-words">{{ transaction.transaction_number }}</span>
                     </div>
                     <div class="flex flex-col justify-center items-start gap-1 self-stretch">
                         <span class="w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.requested_date') }}</span>
-                        <span class="self-stretch text-gray-950 text-sm font-medium ">{{ formatDateTime(transaction.created_at) }}</span>
+                        <span class="self-stretch text-gray-950 text-sm font-medium break-words">{{ formatDateTime(transaction.created_at) }}</span>
                     </div>
                     <div class="flex flex-col justify-center items-start gap-1 self-stretch">
                         <span class="w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.from') }}</span>
-                        <span class="self-stretch text-gray-950 text-sm font-medium ">
+                        <span class="self-stretch text-gray-950 text-sm font-medium break-words">
                             {{ withdrawal_type === 'rebate' ? $t('public.rebate') : withdrawal_type === 'bonus' ? $t('public.bonus') : transaction.from_meta_login }}
                         </span>
                     </div>
                     <div class="flex flex-col justify-center items-start gap-1 self-stretch">
                         <span class="w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.requested_amount') }}</span>
-                        <span class="self-stretch text-gray-950 text-sm font-medium ">$ {{ formatAmount(transaction.amount) }}</span>
+                        <span class="self-stretch text-gray-950 text-sm font-medium break-words">$ {{ formatAmount(transaction.amount) }}</span>
                     </div>
                     <div class="flex flex-col items-start gap-1 self-stretch md:flex-row">
                         <span class="min-w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.receiving_address') }}</span>

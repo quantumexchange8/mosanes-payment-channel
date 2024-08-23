@@ -39,9 +39,8 @@ const changeLanguage = async (langVal) => {
 
     <div
         style="background-image: url('/img/background-login.svg'); background-repeat: repeat-x;"
-        class=""
     >
-        <div class="flex flex-col min-h-screen max-w-[360px] mx-auto">
+        <div class="flex flex-col min-h-screen max-w-md mx-auto">
             <div class="flex py-3 px-5 justify-end items-center">
                 <div
                     class="w-[60px] h-[60px] p-[17.5px] flex items-center justify-center rounded-full hover:cursor-pointer hover:bg-gray-100 text-gray-800"

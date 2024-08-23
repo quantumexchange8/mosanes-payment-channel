@@ -32,13 +32,13 @@ defineProps({
                 },
             ]"
         > -->
-        <div class="max-w-[360px] min-h-screen flex flex-col justify-center items-center mx-auto">
+        <div class="max-w-md min-h-screen flex flex-col justify-center items-center mx-auto">
             <!-- Navbar -->
             <Navbar :title="title" />
 
             <!-- Page Content -->
             <main class="w-full flex flex-col flex-1 items-center pt-3">
-                <div class="w-[360px] flex flex-col justify-center items-center px-3">
+                <div class="w-full flex flex-col justify-center items-center px-3">
                     <ToastList />
                     <ConfirmationDialog />
                     <NotificationDialog />
