@@ -16,7 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        //
+        $middleware->validateCsrfTokens(except: [
+            'deposit_return',
+            'deposit_callback'
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
