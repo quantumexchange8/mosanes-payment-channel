@@ -18,8 +18,11 @@ Route::get('locale/{locale}', function ($locale) {
 Route::get('/', function () {
     return redirect(route('login'));
 });
+Route::post('deposit_callback', [DashboardController::class, 'depositCallback'])->name('depositCallback');
 
 Route::middleware(['auth','verified'])->group(function () {
+    Route::get('deposit_return', [DashboardController::class, 'depositReturn']);
+
     /**
      * ==============================
      *          Dashboard

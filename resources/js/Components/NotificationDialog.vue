@@ -43,7 +43,7 @@ onUnmounted(() => removeFinishEventListener());
         v-model:visible="showWithdrawalDialog"
         modal
         :pt="{
-            root: 'w-80 flex flex-col items-center rounded-2xl border border-gray-200 bg-white py-5 px-4 sm:w-[400px] sm:rounded-3xl sm:px-7 sm:py-7',
+            root: 'w-80 flex flex-col items-center rounded-2xl border border-gray-200 bg-white py-5 px-4',
             mask: {
             style: 'backdrop-filter: blur(2px)'
             }
@@ -51,29 +51,29 @@ onUnmounted(() => removeFinishEventListener());
     >
         <template #container="{ closeCallback }">
             <div class="flex flex-col items-center gap-5 self-stretch">
-                <WithdrawalRequestSuccessfulIcon class="w-[225px] h-[150px] sm:w-[300px] sm:h-[200px]" />
+                <WithdrawalRequestSuccessfulIcon class="w-[225px] h-[150px]" />
                 <div class="flex flex-col items-center gap-1 self-stretch">
-                    <span class="self-stretch text-gray-950 text-center text-sm font-semibold sm:text-base">{{ $t('public.withdrawal_request_submitted') }}</span>
-                    <span class="self-stretch text-gray-700 text-center text-xs sm:text-sm">{{ $t('public.withdrawal_request_submitted_message') }}</span>
+                    <span class="self-stretch text-gray-950 text-center text-sm font-semibold">{{ $t('public.withdrawal_request_submitted') }}</span>
+                    <span class="self-stretch text-gray-700 text-center text-xs">{{ $t('public.withdrawal_request_submitted_message') }}</span>
                 </div>
-                <div class="flex flex-col items-center py-2 gap-2 self-stretch sm:py-4 sm:gap-3">
-                    <div class="flex flex-col justify-center items-start gap-1 self-stretch sm:flex-row sm:justify-normal sm:items-center">
+                <div class="flex flex-col items-center py-2 gap-2 self-stretch">
+                    <div class="flex flex-col justify-center items-start gap-1 self-stretch">
                         <span class="w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.transaction_id') }}</span>
-                        <span class="self-stretch text-gray-950 text-sm font-medium sm:self-auto sm:flex-grow">{{ transaction.transaction_number }}</span>
+                        <span class="self-stretch text-gray-950 text-sm font-medium ">{{ transaction.transaction_number }}</span>
                     </div>
-                    <div class="flex flex-col justify-center items-start gap-1 self-stretch sm:flex-row sm:justify-normal sm:items-center">
+                    <div class="flex flex-col justify-center items-start gap-1 self-stretch">
                         <span class="w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.requested_date') }}</span>
-                        <span class="self-stretch text-gray-950 text-sm font-medium sm:self-auto sm:flex-grow">{{ formatDateTime(transaction.created_at) }}</span>
+                        <span class="self-stretch text-gray-950 text-sm font-medium ">{{ formatDateTime(transaction.created_at) }}</span>
                     </div>
-                    <div class="flex flex-col justify-center items-start gap-1 self-stretch sm:flex-row sm:justify-normal sm:items-center">
+                    <div class="flex flex-col justify-center items-start gap-1 self-stretch">
                         <span class="w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.from') }}</span>
-                        <span class="self-stretch text-gray-950 text-sm font-medium sm:self-auto sm:flex-grow">
+                        <span class="self-stretch text-gray-950 text-sm font-medium ">
                             {{ withdrawal_type === 'rebate' ? $t('public.rebate') : withdrawal_type === 'bonus' ? $t('public.bonus') : transaction.from_meta_login }}
                         </span>
                     </div>
-                    <div class="flex flex-col justify-center items-start gap-1 self-stretch sm:flex-row sm:justify-normal sm:items-center">
+                    <div class="flex flex-col justify-center items-start gap-1 self-stretch">
                         <span class="w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.requested_amount') }}</span>
-                        <span class="self-stretch text-gray-950 text-sm font-medium sm:self-auto sm:flex-grow">$ {{ formatAmount(transaction.amount) }}</span>
+                        <span class="self-stretch text-gray-950 text-sm font-medium ">$ {{ formatAmount(transaction.amount) }}</span>
                     </div>
                     <div class="flex flex-col items-start gap-1 self-stretch md:flex-row">
                         <span class="min-w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.receiving_address') }}</span>
@@ -81,7 +81,7 @@ onUnmounted(() => removeFinishEventListener());
                     </div>
                 </div>
             </div>
-            <div class="flex justify-center items-center pt-5 gap-4 self-stretch sm:pt-7">
+            <div class="flex justify-center items-center pt-5 gap-4 self-stretch">
                 <Button type="button" variant="primary-flat" class="w-full" @click="closeCallback">
                     {{ $t('public.alright') }}
                 </Button>
@@ -110,15 +110,15 @@ onUnmounted(() => removeFinishEventListener());
                 <div class="flex flex-col items-center py-2 gap-2 self-stretch">
                     <div class="flex flex-col justify-center items-start gap-1 self-stretch">
                         <span class="w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.date') }}</span>
-                        <span class="self-stretch text-gray-950 text-sm font-medium">{{ formatDateTime(transaction.approved_at) }}</span>
+                        <span class="self-stretch text-gray-950 text-sm font-medium break-words">{{ formatDateTime(transaction.approved_at) }}</span>
                     </div>
                     <div class="flex flex-col justify-center items-start gap-1 self-stretch">
                         <span class="w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.account') }}</span>
-                        <span class="self-stretch text-gray-950 text-sm font-medium">{{ transaction.transaction_number }}</span>
+                        <span class="self-stretch text-gray-950 text-sm font-medium break-words">{{ transaction.transaction_number }}</span>
                     </div>
                     <div class="flex flex-col justify-center items-start gap-1 self-stretch">
                         <span class="w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.deposit_amount') }}</span>
-                        <span class="self-stretch text-gray-950 text-sm font-medium">{{ transaction.transaction_amount }}</span>
+                        <span class="self-stretch text-gray-950 text-sm font-medium break-words">{{ transaction.transaction_amount }}</span>
                     </div>
                     <div class="flex flex-col justify-center items-start gap-1 self-stretch">
                         <span class="w-[140px] text-gray-500 text-xs font-medium">{{ $t('public.txid') }}</span>

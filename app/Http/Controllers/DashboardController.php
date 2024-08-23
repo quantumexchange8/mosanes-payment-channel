@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Inertia\Inertia;
+use App\Models\TradingUser;
 use App\Models\Transaction;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\TradingAccount;
+use App\Services\ChangeTraderBalanceType;
 use App\Services\CTraderService;
 use App\Models\AssetSubscription;
 use Illuminate\Support\Facades\Log;
@@ -209,4 +211,107 @@ class DashboardController extends Controller
 
     }
 
+        //payment gateway return function
+        public function depositReturn(Request $request)
+        {
+            $data = $request->all();
+    
+            Log::debug('deposit return ', $data);
+    
+            if ($data['response_status'] == 'success') {
+    
+                $result = [
+                    "amount" => $data['transfer_amount'],
+                    "transaction_number" => $data['transaction_number'],
+                    "txn_hash" => $data['txID'],
+                ];
+    
+                $transaction = Transaction::query()
+                    ->where('transaction_number', $result['transaction_number'])
+                    ->first();
+    
+                $result['date'] = $transaction->approval_date;
+    
+                return redirect()->route('dashboard')->with('notification', [
+                    'details' => $transaction,
+                    'type' => 'deposit',
+                ]);
+            } else {
+                return to_route('dashboard');
+            }
+        }
+    
+        public function depositCallback(Request $request)
+        {
+            $data = $request->all();
+    
+            $result = [
+                "token" => $data['vCode'],
+                "from_wallet_address" => $data['from_wallet'],
+                "to_wallet_address" => $data['to_wallet'],
+                "txn_hash" => $data['txID'],
+                "transaction_number" => $data['transaction_number'],
+                "amount" => $data['transfer_amount'],
+                "status" => $data["status"],
+                "remarks" => 'System Approval',
+            ];
+    
+            $transaction = Transaction::query()
+                ->where('transaction_number', $result['transaction_number'])
+                ->first();
+    
+            $payoutSetting = config('payment-gateway');
+            $domain = $_SERVER['HTTP_HOST'];
+    
+            if ($domain === 'user.mosanes.com') {
+                $selectedPayout = $payoutSetting['live'];
+            } else {
+                $selectedPayout = $payoutSetting['staging'];
+            }
+    
+            $dataToHash = md5($transaction->transaction_number . $selectedPayout['appId'] . $selectedPayout['merchantId']);
+            $status = $result['status'] == 'success' ? 'successful' : 'failed';
+    
+            if ($result['token'] === $dataToHash) {
+                //proceed approval
+                $transaction->update([
+                    'from_wallet_address' => $result['from_wallet_address'],
+                    'to_wallet_address' => $result['to_wallet_address'],
+                    'txn_hash' => $result['txn_hash'],
+                    'amount' => $result['amount'],
+                    'transaction_charges' => 0,
+                    'transaction_amount' => $result['amount'],
+                    'status' => $status,
+                    'remarks' => $result['remarks'],
+                    'approved_at' => now()
+                ]);
+    
+    //            Notification::route('mail', 'payment@currenttech.pro')
+    //                ->notify(new DepositApprovalNotification($payment));
+    
+                if ($transaction->status == 'successful') {
+                    if ($transaction->transaction_type == 'deposit') {
+                        try {
+                            $trade = (new CTraderService)->createTrade($transaction->to_meta_login, $transaction->transaction_amount, "Deposit balance", ChangeTraderBalanceType::DEPOSIT);
+                        } catch (\Throwable $e) {
+                            if ($e->getMessage() == "Not found") {
+                                TradingUser::firstWhere('meta_login', $transaction->to)->update(['acc_status' => 'Inactive']);
+                            } else {
+                                Log::error($e->getMessage());
+                            }
+                            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+                        }
+                        $ticket = $trade->getTicket();
+                        $transaction->ticket = $ticket;
+                        $transaction->save();
+    
+                        return response()->json(['success' => true, 'message' => 'Deposit Success']);
+    
+                    }
+                }
+            }
+    
+            return response()->json(['success' => false, 'message' => 'Deposit Failed']);
+        }
+    
 }
