@@ -63,7 +63,7 @@ class DashboardController extends Controller
 
                 $following_master = AssetSubscription::with('asset_master:id,asset_name')
                     ->where('meta_login', $account->meta_login)
-                    ->where('status', 'ongoing')
+                    ->whereIn('status', ['ongoing', 'pending'])
                     ->first();
 
                 $remaining_days = null;
@@ -87,6 +87,7 @@ class DashboardController extends Controller
                     'asset_master_id' => $following_master->asset_master->id ?? null,
                     'asset_master_name' => $following_master->asset_master->asset_name ?? null,
                     'remaining_days' => intval($remaining_days),
+                    'status' => $following_master->status ?? null,
                 ];
             });
 

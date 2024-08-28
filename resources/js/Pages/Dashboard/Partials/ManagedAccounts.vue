@@ -102,13 +102,19 @@ watchEffect(() => {
                 </div>
                 <div class="w-full flex items-center gap-1 flex-grow">
                     <span class="w-16 text-gray-500 text-xs">{{ $t('public.pamm') }}:</span>
-                    <Link
+                    <!-- <Link
                         v-if="account.asset_master_id"
                         :href="route('asset_master.showPammInfo', account.asset_master_id)"
                         class="text-primary-500 text-xs font-semibold underline hover:text-primary-600"
                     >
                         {{ account.asset_master_name ?? '-' }}
-                    </Link>
+                    </Link> -->
+                    <div
+                        v-if="account.asset_master_id"
+                        class="text-primary-500 text-xs font-semibold underline hover:text-primary-600"
+                    >
+                        {{ account.asset_master_name ?? '-' }}
+                    </div>
                     <span v-else class="text-gray-950 text-xs font-medium">-</span>
                 </div>
                 <div class="w-full flex items-center gap-1 flex-grow">

@@ -50,6 +50,7 @@ const submitForm = (formType) => {
         size="sm"
         class="w-full"
         @click="openDialog('deposit')"
+        :disabled="props.account.status == 'pending'"
     >
         {{ $t('public.deposit') }}
     </Button>
