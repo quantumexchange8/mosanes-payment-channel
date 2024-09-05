@@ -40,6 +40,7 @@ const locales = [
 
 const changeLanguage = async (langVal) => {
     try {
+        op.value.toggle(false);
         currentLocale.value = langVal;
         await loadLanguageAsync(langVal);
         await axios.get(`/locale/${langVal}`);
